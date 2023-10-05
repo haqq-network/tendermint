@@ -738,7 +738,7 @@ func NewNode(config *cfg.Config,
 		return nil, fmt.Errorf("error in genesis doc: %w", err)
 	}
 
-	state, err := loadStateFromDBOrGenesisDoc(stateStore, stateDB, genDoc)
+	state, err := LoadStateFromDBOrGenesisDoc(stateStore, stateDB, genDoc)
 	if err != nil {
 		return nil, err
 	}
@@ -1405,7 +1405,7 @@ var genesisDocHashKey = []byte("genesisDocHash")
 // LoadStateFromDBOrGenesisDocProvider attempts to load the state from the
 // database, or creates one using the given genesisDocProvider. On success this also
 // returns the genesis doc loaded through the given provider.
-func loadStateFromDBOrGenesisDoc(
+func LoadStateFromDBOrGenesisDoc(
 	stateStore sm.Store,
 	stateDB dbm.DB,
 	genDoc *types.GenesisDoc,
