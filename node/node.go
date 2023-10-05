@@ -26,7 +26,6 @@ import (
 	"github.com/tendermint/tendermint/crypto/tmhash"
 	"github.com/tendermint/tendermint/evidence"
 
-	tmjson "github.com/tendermint/tendermint/libs/json"
 	"github.com/tendermint/tendermint/libs/log"
 	tmpubsub "github.com/tendermint/tendermint/libs/pubsub"
 	"github.com/tendermint/tendermint/libs/service"
@@ -1417,16 +1416,20 @@ func loadStateFromDBOrGenesisDoc(
 		return sm.State{}, err
 	}
 
-	genDocBytes, err := tmjson.Marshal(genDoc)
-	if err != nil {
-		return sm.State{}, fmt.Errorf("failed to save genesis doc hash due to marshaling error: %w", err)
-	}
+	validatorsHash := genDoc.ValidatorHash()
 
-	fmt.Println("genDocBytes len: ", len(genDocBytes))
-	fmt.Println("genDocBytes first 10 bytes: ", genDocBytes[:10])
-	fmt.Println("genDocBytes last 10 bytes: ", genDocBytes[len(genDocBytes)-10:])
+	fmt.Println("validatorsHash len: ", len(validatorsHash))
 
-	incomingGenDocHash := tmhash.Sum(genDocBytes)
+	// genDocBytes, err := tmjson.Marshal(genDoc)
+	// if err != nil {
+	// 	return sm.State{}, fmt.Errorf("failed to save genesis doc hash due to marshaling error: %w", err)
+	// }
+
+	// fmt.Println("genDocBytes len: ", len(genDocBytes))
+	// fmt.Println("genDocBytes first 10 bytes: ", genDocBytes[:10])
+	// fmt.Println("genDocBytes last 10 bytes: ", genDocBytes[len(genDocBytes)-10:])
+
+	incomingGenDocHash := tmhash.Sum(validatorsHash)
 
 	fmt.Println("genDocHash: ", genDocHash)
 	fmt.Println("incomingGenDocHash: ", incomingGenDocHash)
