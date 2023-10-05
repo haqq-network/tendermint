@@ -1422,10 +1422,14 @@ func loadStateFromDBOrGenesisDoc(
 		return sm.State{}, fmt.Errorf("failed to save genesis doc hash due to marshaling error: %w", err)
 	}
 
+	fmt.Println("genDocBytes len: ", len(genDocBytes))
+	fmt.Println("genDocBytes first 10 bytes: ", genDocBytes[:10])
+	fmt.Println("genDocBytes last 10 bytes: ", genDocBytes[len(genDocBytes)-10:])
+
 	incomingGenDocHash := tmhash.Sum(genDocBytes)
 
-	fmt.Println("genDocHash", genDocHash)
-	fmt.Println("incomingGenDocHash", incomingGenDocHash)
+	fmt.Println("genDocHash: ", genDocHash)
+	fmt.Println("incomingGenDocHash: ", incomingGenDocHash)
 
 	if len(genDocHash) != 0 && !bytes.Equal(genDocHash, incomingGenDocHash) {
 		return sm.State{}, fmt.Errorf("genesis doc hash in db does not match loaded genesis doc")
